@@ -8,7 +8,7 @@
 
         <script src="../../socket.io/socket.io.js"></script> 
         <script >    
-            const socket = io("http://localhost:3000");
+            const socket = io("https://buzzer-sync.herokuapp.com/");
             socket.emit('join', {'room':'<%=code%>','name':"<%= name %>"});
 
             function buzz() {
