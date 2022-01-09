@@ -5,6 +5,9 @@ app.set('view engine', 'ejs');
 app.set('views', './views');
 app.use( express.static( "public" ) );
 const http = require('http');
+const hostname = '0.0.0.0';
+const port = 3000;
+
 const server = http.createServer(app);
 const { Server } = require("socket.io",(http,{
     cors:{
@@ -53,6 +56,6 @@ app.get('/client/:code', (req, res) => {
     res.render('client', { code: req.params.code, name: req.query.name });
 });
 
-server.listen(3000, () => {
+server.listen(port, hostname, () => {
     console.log('listening on :3000');
   });
