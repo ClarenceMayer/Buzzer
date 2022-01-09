@@ -27,24 +27,31 @@ io.on('connection',(socket)=>{
     socket.on('create', (room)=>{
         socket.join(room);
         rooms[room] = {
-            resetValue: 0
+            resetValue: 0,
+            users: {}
         };
       });
 
     socket.on('join', (data)=>{
         socket.join(data.room);
-        socket.to(data.room).emit('joined', {'id':socket.id, 'name': data.name});
+        try{
+            rooms[data.room].users[socket.id] = {'id':socket.id,'name':data.name};
+            io.in(data.room).emit('joined', rooms[data.room].users);
+        }catch(e){
+            console.log(e);
+        }
       });
     
     socket.on('buzz',(room)=>{
         if(rooms[room].resetValue === 0){
-            socket.to(room).emit('buzz', socket.id);
+            io.in(room).emit('buzz', socket.id);
             rooms[room].resetValue = 1;
         }
     })
 
     socket.on('reset',(room)=>{
         rooms[room].resetValue = 0;
+        io.in(room).emit('reset');
     })
 })
 

@@ -5,12 +5,26 @@
     </head>
     <body>
         <button class="container" onclick="buzz()">BUZZER</button>
+        <div id="players"></div>
 
         <script src="../../socket.io/socket.io.js"></script> 
         <script >    
             const socket = io("https://buzzer-sync.herokuapp.com/");
-            socket.emit('join', {'room':'<%=code%>','name':"<%= name %>"});
+            //const socket = io("http://localhost:3000");
 
+            socket.emit('join', {'room':'<%=code%>','name':"<%= name %>"});
+            socket.on('joined', (datas) => {
+                document.getElementById("players").innerHTML = "";
+                Object.values(datas).forEach((data)=>{
+                    document.getElementById("players").innerHTML += "<div class='player' id="+ data.id +"><h3>"+ data.name +"</h3></div>";
+                })
+            });
+            socket.on('buzz',(id)=>{
+                document.getElementById(id).className = 'player selected';
+            })
+            socket.on('reset',()=>{
+                document.getElementsByClassName("selected")[0].className = "player";
+            })
             function buzz() {
                 socket.emit('buzz','<%=code%>');
             }

@@ -10,3 +10,26 @@ button{
     width: 150px;
     text-align: center;
 }
+
+#players{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    position: absolute;
+    top: 5%;
+    left: 0%;
+}
+
+.player{
+    text-align: center;
+    width: 100;
+    display: block;
+    position: relative;
+}
+
+.selected{
+        border: 2px solid #00FF00;
+        box-shadow: #00FF00 0 0 15px;
+}

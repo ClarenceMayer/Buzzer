@@ -12,6 +12,8 @@
         <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
         <script > 
             const socket = io("https://buzzer-sync.herokuapp.com/");
+            //const socket = io("http://localhost:3000");
+
             if(Cookies.get("roomCode") == null){
                 var roomCode = '';
                 for(let i = 0; i < 4; i++) {
@@ -25,8 +27,11 @@
             document.getElementById("roomCode").innerHTML = "Room code : " + roomCode;
             socket.emit("create", roomCode);
 
-            socket.on('joined', (data) => {
-                document.getElementById("gamePanel").innerHTML += "<div class='player' id="+ data.id +"><h3>"+ data.name +"</h3><img src='/images/avatar.jpg' alt='img' width='75' height='75'></div>";
+            socket.on('joined', (datas) => {
+                document.getElementById("gamePanel").innerHTML = "";
+                Object.values(datas).forEach((data)=>{
+                    document.getElementById("gamePanel").innerHTML += "<div class='player' id="+ data.id +"><h3>"+ data.name +"</h3><img src='/images/avatar.jpg' alt='img' width='75' height='75'></div>";
+                })
             });
             socket.on('buzz',(id)=>{
                 document.getElementById(id).className = 'player selected';
