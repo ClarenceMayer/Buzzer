@@ -1,9 +1,11 @@
 const express = require('express');
+const cors = require('cors');
 const res = require('express/lib/response');
 const app = express();
 app.set('view engine', 'ejs');
 app.set('views', './views');
 app.use( express.static( "public" ) );
+app.use(cors());
 const http = require('http');
 const port = process.env.PORT || 3000;
 
