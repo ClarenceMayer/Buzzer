@@ -5,13 +5,16 @@ app.set('view engine', 'ejs');
 app.set('views', './views');
 app.use( express.static( "public" ) );
 const http = require('http');
-const hostname = '0.0.0.0';
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 const server = http.createServer(app);
 const { Server } = require("socket.io",(http,{
     cors:{
-        origin: '*'
+        origin: '*',
+        methods: 'GET, PUT, POST, DELETE, OPTIONS',
+        allowedHeaders: 'Content-Type, Authorization, Content-Length, X-Requested-With',
+        exposedHeaders: '',
+        credentials: true
     }
 }) );
 const io = new Server(server);
@@ -56,6 +59,6 @@ app.get('/client/:code', (req, res) => {
     res.render('client', { code: req.params.code, name: req.query.name });
 });
 
-server.listen(port, hostname, () => {
-    console.log('listening on :3000');
+server.listen(port, () => {
+    console.log('listening on :' + port);
   });
