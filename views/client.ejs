@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="/css/client.css"></link>
+        <link rel="stylesheet" href="/css/style.css"></link>
+    </head>
+    <body>
+        <button class="container" onclick="buzz()">BUZZER</button>
+
+        <script src="../../socket.io/socket.io.js"></script> 
+        <script >    
+            const socket = io("http://localhost:3000");
+            socket.emit('join', {'room':'<%=code%>','name':"<%= name %>"});
+
+            function buzz() {
+                socket.emit('buzz','<%=code%>');
+            }
+        </script>
+    </body>
+</html>
+
+

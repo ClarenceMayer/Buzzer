@@ -1,0 +1,42 @@
+<html>  
+    <head>
+        <link rel="stylesheet" href="/css/index.css"></link>
+        <link rel="stylesheet" href="/css/style.css"></link>
+    </head>
+    <body>
+        <div class="container">
+            <button onclick="location.href='host'"> Create room </button><br>
+            <button onclick="connect()"> Join room </button>
+        </div>
+        
+
+        <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            function connect() {
+                Swal.fire(
+                    '<input type="text" id="nom" placeholder="Enter your name" required>' +
+                    '<input type="text" id="room" placeholder="Enter room name" required>',
+                    '',
+                    'question'
+
+                ).then((result) => {
+                    if (result.value) {
+                        var nom = document.getElementById('nom').value;
+                        var room = document.getElementById('room').value;
+                        if(nom.length > 0 && room.length > 0) {
+                            location.href = 'client/' + room+ '?name=' + nom;
+                        }else{
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Please enter your name and room name'
+                            })
+                        }
+                    }
+                })
+            }
+        </script>
+
+    </body>
+</html>
+

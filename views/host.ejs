@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="/css/host.css"></link>
+        <link rel="stylesheet" href="/css/style.css"></link>
+    </head>
+    <body>
+        <h1 id="roomCode">Room code :</h1>
+        <div id="gamePanel"></div>
+        <button id="reset" onclick="reset()">Reset</button>
+        
+        <script src="./socket.io/socket.io.js"></script> 
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+        <script > 
+            const socket = io("http://localhost:3000");
+            if(Cookies.get("roomCode") == null){
+                var roomCode = '';
+                for(let i = 0; i < 4; i++) {
+                    roomCode += Math.floor(Math.random() * 10);
+                }
+                Cookies.set("roomCode", roomCode);
+            }else{
+                var roomCode = Cookies.get("roomCode");
+                socket.emit("reconnect");
+            }
+            document.getElementById("roomCode").innerHTML = "Room code : " + roomCode;
+            socket.emit("create", roomCode);
+
+            socket.on('joined', (data) => {
+                document.getElementById("gamePanel").innerHTML += "<div class='player' id="+ data.id +"><h3>"+ data.name +"</h3><img src='/images/avatar.jpg' alt='img' width='75' height='75'></div>";
+            });
+            socket.on('buzz',(id)=>{
+                document.getElementById(id).className = 'player selected';
+            })
+
+            function reset(){
+                socket.emit("reset", roomCode);
+                document.getElementsByClassName("selected")[0].className = "player";
+            }
+        </script>
+    </body>
+</html>
+
+
