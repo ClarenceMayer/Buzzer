@@ -9,7 +9,24 @@ plugins:
   - serverless-google-cloudfunctions
 
 functions:
-  hello:
-    handler: handler
+  index:
+    handler: index.handler
     events:
-      - http: path
+      - http:
+          method: get
+          path: /
+          credentials: {}
+  host:
+    handler: host.handler
+    events:
+      - http:
+          method: get
+          path: /host
+          credentials: {}
+  client:
+    handler: client.handler
+    events:
+      - http:
+          method: get
+          path: /client/:id
+          credentials: {}
